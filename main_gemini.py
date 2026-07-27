@@ -1,0 +1,41 @@
+import os
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
+
+from schemas_gemini import StockRequest, StockAnalysis
+from ai_gemini import analyze_asset
+
+from dotenv import load_dotenv
+load_dotenv()
+
+app = FastAPI(
+    title="Gemini Stock Analysis API",
+    description="Analyzes 30-day stock trend data using Gemini and returns BUY/HOLD/SELL signal.",
+    version="1.0.0"
+)
+
+
+@app.get("/health")
+def health():
+    has_key = bool(os.getenv("GEMINI_API_KEY"))
+    return {"status": "ok", "gemini_key_loaded": has_key}
+
+
+@app.post("/analyze", response_model=StockAnalysis)
+def analyze(stock_data: StockRequest):
+    if not os.getenv("GEMINI_API_KEY"):
+        raise HTTPException(status_code=500, detail="GEMINI_API_KEY is not set")
+
+    try:
+        result = analyze_asset(stock_data)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Gemini analysis failed: {str(e)}")
+
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=500,
+        content={"detail": f"Unexpected server error: {str(exc)}"},
+    )
