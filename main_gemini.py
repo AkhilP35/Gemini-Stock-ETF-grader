@@ -1,6 +1,6 @@
 import os
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 
 from schemas_gemini import StockRequest, StockAnalysis
 from ai_gemini import analyze_asset
@@ -13,6 +13,11 @@ app = FastAPI(
     description="Analyzes 30-day stock trend data using Gemini and returns BUY/HOLD/SELL signal.",
     version="1.0.0"
 )
+
+
+@app.get("/")
+def root():
+    return RedirectResponse(url="/docs")
 
 
 @app.get("/health")
@@ -39,3 +44,5 @@ async def global_exception_handler(request, exc):
         status_code=500,
         content={"detail": f"Unexpected server error: {str(exc)}"},
     )
+#cd /Volumes/SSD/stock-ai/Gemini
+#uvicorn main_gemini:app --reload
