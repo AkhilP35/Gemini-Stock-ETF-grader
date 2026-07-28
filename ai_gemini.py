@@ -3,13 +3,13 @@ import os
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-from schemas_gemini import StockAnalysis, StockRequest
+from schemas_gemini import StockAnalysis, StockMarketData
 
 load_dotenv()
 
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-def analyze_asset(stock_data: StockRequest) -> StockAnalysis:
+def analyze_asset(stock_data: StockMarketData) -> StockAnalysis:
     prompt = f"""
 You are an expert financial analyst. Analyze the following 30-day stock data for {stock_data.ticker}:
 - 30-Day Moving Average: {stock_data.moving_average}

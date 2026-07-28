@@ -19,16 +19,6 @@
                     <input type="text" id="ticker" placeholder="AAPL" required>
                 </div>
                 
-                <div class="form-group">
-                    <label for="movingAverage">30-Day Moving Average</label>
-                    <input type="number" id="movingAverage" step="0.01" placeholder="150.00" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="closingPrices">Daily Closing Prices (comma-separated)</label>
-                    <textarea id="closingPrices" rows="3" placeholder="145.2, 146.8, 148.1, ..." required></textarea>
-                </div>
-                
                 <button type="submit" id="analyzeBtn">
                     🔍 Analyze Stock
                 </button>
@@ -74,9 +64,6 @@
             e.preventDefault();
             
             const ticker = document.getElementById('ticker').value;
-            const movingAverage = parseFloat(document.getElementById('movingAverage').value);
-            const closingPricesStr = document.getElementById('closingPrices').value;
-            const closingPrices = closingPricesStr.split(',').map(p => parseFloat(p.trim()));
             
             // Hide previous results
             document.getElementById('result').classList.add('hidden');
@@ -93,9 +80,7 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        ticker: ticker,
-                        moving_average: movingAverage,
-                        closing_prices: closingPrices
+                        ticker: ticker
                     })
                 });
                 

@@ -6,6 +6,7 @@ from fastapi.staticfiles import StaticFiles
 
 from schemas_gemini import StockRequest, StockAnalysis
 from ai_gemini import analyze_asset
+from data_gemini import MarketDataError, fetch_stock_market_data
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -40,8 +41,11 @@ def analyze(stock_data: StockRequest):
         raise HTTPException(status_code=500, detail="GEMINI_API_KEY is not set")
 
     try:
-        result = analyze_asset(stock_data)
+        market_data = fetch_stock_market_data(stock_data.ticker)
+        result = analyze_asset(market_data)
         return result
+    except MarketDataError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Gemini analysis failed: {str(e)}")
 
