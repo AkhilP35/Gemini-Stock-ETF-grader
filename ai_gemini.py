@@ -21,7 +21,7 @@ Assign a signal of strictly "BUY", "HOLD", or "SELL".
 Provide a 2-3 sentence reasoning for your decision based on the price trend versus the moving average.
 """
     response = client.models.generate_content(
-        model="gemini-1.5-flash",
+        model="gemini-3.5-flash",
         contents=prompt,
         config=types.GenerateContentConfig(
             response_mime_type="application/json",
