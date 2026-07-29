@@ -91,11 +91,11 @@
                 
                 const data = await response.json();
                 
-                // Display results
-                document.getElementById('resultTicker').textContent = data.ticker;
+                // Display results (fall back to the submitted ticker if API omits it)
+                document.getElementById('resultTicker').textContent = data.ticker || ticker.toUpperCase();
                 document.getElementById('resultSignal').textContent = data.signal;
                 document.getElementById('resultRisk').textContent = data.risk_score + '/10';
-                document.getElementById('resultAnalysis').textContent = data.analysis;
+                document.getElementById('resultAnalysis').textContent = data.analysis || '';
                 document.getElementById('resultReasoning').textContent = data.reasoning;
                 
                 // Color code the signal
