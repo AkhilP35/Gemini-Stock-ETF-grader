@@ -1,0 +1,7 @@
+fastapi
+google-genai
+jinja2
+python-dotenv
+requests
+uvicorn
+yfinance
