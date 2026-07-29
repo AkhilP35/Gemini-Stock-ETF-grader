@@ -30,4 +30,6 @@ Provide a 2-3 sentence reasoning for your decision based on the price trend vers
         ),
     )
     parsed = json.loads(response.text)
+    # Always use the known ticker — do not rely on the model to echo it back
+    parsed["ticker"] = stock_data.ticker
     return StockAnalysis(**parsed)
