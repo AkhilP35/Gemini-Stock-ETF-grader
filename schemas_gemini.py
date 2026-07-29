@@ -13,6 +13,8 @@ class StockMarketData(BaseModel):
 
 
 class StockAnalysis(BaseModel):
+    ticker: str = Field(..., description="Stock ticker that was analyzed")
     risk_score: int = Field(..., ge=1, le=10)
     signal: Literal["BUY", "HOLD", "SELL"]
+    analysis: str = Field(..., description="Brief analysis of the price trend")
     reasoning: str
